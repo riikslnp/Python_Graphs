@@ -1,0 +1,31 @@
+{% extends "base.j2.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %} 
+    <p>Please provide some points for the graph by clicking the canvas.</p>
+    <div>
+        <canvas id="drawingCanvas" width="500" height="300">
+
+        </canvas>
+    </div>
+
+<script type="text/javascript">
+    let click_list = [];
+
+    var elem = document.getElementById('drawingCanvas');
+
+    elem.addEventListener('click', function(e) {
+        var x = e.pageX - $('#drawingCanvas').offset().left;
+        var y = e.pageY - $('#drawingCanvas').offset().top;
+        click_list.push([x,y]);
+        post_new()
+    });
+
+    async function post_new() {
+        console.log(click_list)
+    }
+
+</script>
+
+{% endblock %}
