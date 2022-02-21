@@ -9,6 +9,12 @@
 
         </canvas>
     </div>
+    {% if message %}
+        {{message}}
+    {% endif %}
+    <div id="insert">
+
+    </div>
 
 <script type="text/javascript">
     let click_list = [];
@@ -23,7 +29,23 @@
     });
 
     async function post_new() {
-        console.log(click_list)
+        const response = await fetch({{url_for('add_point')|tojson}}, {
+            method: 'POST',
+            body: JSON.stringify({'data':click_list}),
+            contentType: 'application/json'
+        });
+
+        if(! response.ok) {
+            // If received an error, display message box
+            const reason = await response.text();
+            alert("Adding a point failed: " + reason);
+            return false;
+        } else {
+            // get matplotlib figure from the response and insert it into a div
+            var image_to = document.getElementById('insert');
+            image_to.innerHTML=await response.text();
+            
+        }
     }
 
 </script>
